@@ -116,16 +116,20 @@ outlets=SILVER_CDC         │
                    runs: dbt build → BigQuery gold.*
 ```
 
+![dependencies](docs/dags/dependencie.png)
+
 **Timeline per hour (no overlap, no contention):**
 ```
 :00  Bronze APIs run (openweather, openmeteo, tomorrowio)
-:05  silver_weather triggered by Datasets → Spark job runs
-:15  silver_weather done → SILVER_WEATHER dataset emitted
+     silver_weather triggered by Datasets → Spark job runs
+     silver_weather done → SILVER_WEATHER dataset emitted
 :25  silver_cdc triggered by cron → Spark job runs
-:35  silver_cdc done → SILVER_CDC dataset emitted
-:40  gold_dbt triggered (both silver datasets ready) → dbt build
+     silver_cdc done → SILVER_CDC dataset emitted
+     gold_dbt triggered (both silver datasets ready) → dbt build
 :55  silver_weather cron fallback (safety net if Dataset trigger missed)
 ```
+
+![schedule](docs/dags/schedule.png)
 
 ### Order Simulation
 
