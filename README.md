@@ -212,6 +212,8 @@ highlands-lakehouse/
 | `bronze/weather/openmeteo/{city}/{YYYY/MM/DD/HH}/` | Parquet | Open-Meteo API |
 | `bronze/weather/tomorrowio/{city}/{YYYY/MM/DD/HH}/` | Parquet | TomorrowIO API |
 
+![bronze](docs/gcs/bronze.png)
+
 ### Silver — Iceberg on GCS
 
 | Table | Grain | Strategy | Key Columns |
@@ -436,6 +438,8 @@ The Looker Studio dashboard connects to `gold.fact_sales_weather` and `gold.real
 - **Hourly order volume** per city/store
 - **Top products** by weather condition
 - **Real-time order status** scorecards (from BQ Materialized View, ~5-min lag)
+
+![dashboard](docs/dashboard/example.png)
 
 > https://datastudio.google.com/reporting/ec1f1ac1-dea0-4091-96fb-53e6b1d4a8c7
 
