@@ -121,9 +121,9 @@ outlets=SILVER_CDC         │
 **Timeline per hour (no overlap, no contention):**
 ```
 :00  Bronze APIs run (openweather, openmeteo, tomorrowio)
-:10  order_simulator runs
      silver_weather triggered by Datasets → Spark job runs
      silver_weather done → SILVER_WEATHER dataset emitted
+:10  order_simulator runs (update orders status and generates new orders based on weather condition)
 :25  silver_cdc triggered by cron → Spark job runs
      silver_cdc done → SILVER_CDC dataset emitted
      gold_dbt triggered (both silver datasets ready) → dbt build
