@@ -1,0 +1,40 @@
+# GCP credentials — NEVER commit
+config/*.json
+
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Logs
+logs/
+
+# Data files
+data/processed/
+data/raw/
+
+# Airflow
+airflow.db
+airflow.cfg
+webserver_config.py
+dags/__pycache__/
+dags/**/__pycache__/
+
+# dbt
+dbt/target/
+dbt/logs/
+dbt/.user.yml
+dbt/dbt_packages/
+
+# Spark
+jars/
+
+# IDE
+.vscode/
+.idea/
+*.iml

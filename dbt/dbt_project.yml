@@ -1,0 +1,21 @@
+name: highlands_gold
+version: '1.0.0'
+config-version: 2
+
+# Tên profile phải khớp với key trong profiles.yml
+profile: highlands_gold
+
+model-paths: ["models"]
+test-paths:  ["tests"]
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  highlands_gold:
+    gold:
+      # Mọi model trong thư mục models/gold/ đều là BQ native table
+      # dbt chạy CREATE OR REPLACE TABLE gold.<model> AS SELECT ...
+      # Looker đọc từ native table → không scan lại GCS External Table
+      +materialized: table

@@ -1,0 +1,13 @@
+highlands_gold:
+  target: prod
+  outputs:
+    prod:
+      type: bigquery
+      method: service-account
+      project: highlands-lakehouse
+      dataset: gold
+      location: asia-southeast1
+      # SA keyfile — path trong Docker container
+      keyfile: /opt/airflow/config/highlands-lakehouse-76b9d007fb7f.json
+      threads: 4
+      timeout_seconds: 300

@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: silver_ext
+    # BigQuery dataset chứa External Iceberg Tables
+    # được sync_bigquery task cập nhật sau mỗi Silver DAG run
+    database: highlands-lakehouse
+    schema: silver_ext
+    tables:
+      - name: weather
+      - name: orders
+      - name: order_details
+      - name: products
+      - name: stores
