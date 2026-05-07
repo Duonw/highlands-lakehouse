@@ -91,7 +91,7 @@ The core hypothesis being modeled: *rainy weather → more hot drink orders and 
 
 ### Order Simulation
 
-A separate DAG (`dag_order_simulator`) generates synthetic orders hourly, inserting into SQL Server — which Datastream then picks up and streams to GCS Bronze. Order behavior (Hot Drink vs Cold Drink, Delivery vs Dine-in) is probabilistically driven by current weather conditions at each store's city.
+A separate DAG (`dag_order_simulator`) generates synthetic orders hourly, inserting into SQL Server — which Datastream then picks up and streams to GCS Bronze. Order behavior (Hot Drink vs Cold Drink, Delivery vs Dine-in) is probabilistically driven by current weather conditions at each store's city. It also updates orders' status Pending -> Preparing -> Completed or Pending -> Cancelled.
 
 ```python
 # Example: Rain profile
@@ -99,7 +99,7 @@ A separate DAG (`dag_order_simulator`) generates synthetic orders hourly, insert
 # → 80% of orders are Delivery, 70% of items are Hot Drinks
 ```
 
-**Timeline per hour (no overlap, no contention):**
+**Timeline per hour:**
 ```
 :00  Bronze APIs run (openweather, openmeteo, tomorrowio)
      silver_weather triggered by Datasets → Spark job runs
