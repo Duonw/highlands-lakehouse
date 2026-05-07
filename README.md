@@ -254,8 +254,6 @@ highlands-lakehouse/
 | `gold.fact_sales_weather` | dbt table | hour × store × order_type × category | Main analytics fact with weather enrichment |
 | `gold.realtime_order_stats` | BQ Materialized View | hour × store × status | Near-real-time order counts (5-min refresh) |
 
-> See [docs/schema.md](docs/schema.md) for full column-level documentation and ER diagrams.
-
 ---
 
 ## Setup Guide
@@ -455,7 +453,7 @@ The Looker Studio dashboard connects to `gold.fact_sales_weather` and `gold.real
 - **Top products** by weather condition
 - **Real-time order status** scorecards (from BQ Materialized View, ~5-min lag)
 
-> See [docs/schema.md](docs/schema.md) for the full Gold layer column reference used in dashboard calculations.
+> https://datastudio.google.com/reporting/ec1f1ac1-dea0-4091-96fb-53e6b1d4a8c7
 
 ---
 
