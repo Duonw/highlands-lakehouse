@@ -217,10 +217,10 @@ highlands-lakehouse/
 | Table | Grain | Strategy | Key Columns |
 |---|---|---|---|
 | `silver.orders` | 1 row per order | MERGE INTO (upsert) | order_id |
-| `silver.order_details` | 1 row per line item | MERGE INTO (upsert) | detail_id |
+| `silver.order_details` | 1 row per line item | Append | detail_id |
 | `silver.products` | 1 row per version | SCD Type 2 | product_id + valid_from/valid_to/is_current |
 | `silver.stores` | 1 row per version | SCD Type 2 | store_id + valid_from/valid_to/is_current |
-| `silver.weather` | 1 row per source per city per fetch | Append | source, city_id, fetched_at |
+| `silver.weather` | 1 row per source per city per fetch | MERGE INTO (keep the latest record of each (city_id, timestamp) | source, city_id, fetched_at |
 
 > SCD Type 2 on `products` and `stores` preserves historical price/status — enabling correct revenue attribution even after price changes.
 
