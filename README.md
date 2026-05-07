@@ -116,7 +116,7 @@ outlets=SILVER_CDC         │
                    runs: dbt build → BigQuery gold.*
 ```
 
-![dependencies](docs/dags/dependencie.png)
+![dependencies](docs/dags/dependencies.png)
 
 **Timeline per hour (no overlap, no contention):**
 ```
