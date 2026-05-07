@@ -86,37 +86,18 @@ The core hypothesis being modeled: *rainy weather → more hot drink orders and 
 
 ### Scheduling — Airflow Data-Aware Scheduling (Datasets)
 
-```
-@hourly                @hourly               @hourly
-    │                      │                     │
-dag_openweather    dag_openmeteo         dag_tomorrowio
-    │  outlets=            │  outlets=            │  outlets=
-    │  BRONZE_OW           │  BRONZE_OM           │  BRONZE_TIO
-    └──────────────────────┴─────────────────────┘
-                           │
-              (ALL 3 datasets updated → AND logic)
-                           ▼
-                  dag_silver_weather
-                  schedule=DatasetOrTimeSchedule(
-                      datasets=[OW, OM, TIO],    ← happy path trigger
-                      cron="55 * * * *"           ← fallback if any API fails
-                  )
-                  outlets=SILVER_WEATHER
-                           │
-cron="25 * * * *"          │
-        │                  │
-dag_silver_cdc             │
-outlets=SILVER_CDC         │
-        │                  │
-        └──────────────────┘
-              (BOTH silver datasets updated)
-                           ▼
-                   dag_gold_dbt
-                   schedule=[SILVER_WEATHER, SILVER_CDC]
-                   runs: dbt build → BigQuery gold.*
-```
-
 ![dependencies](docs/dags/dependencies.png)
+
+
+### Order Simulation
+
+A separate DAG (`dag_order_simulator`) generates synthetic orders hourly, inserting into SQL Server — which Datastream then picks up and streams to GCS Bronze. Order behavior (Hot Drink vs Cold Drink, Delivery vs Dine-in) is probabilistically driven by current weather conditions at each store's city.
+
+```python
+# Example: Rain profile
+{"delivery_prob": 0.80, "category_weights": {"Hot Drink": 7, "Cold Drink": 1, "Food": 2}}
+# → 80% of orders are Delivery, 70% of items are Hot Drinks
+```
 
 **Timeline per hour (no overlap, no contention):**
 ```
@@ -131,16 +112,6 @@ outlets=SILVER_CDC         │
 ```
 
 ![schedule](docs/dags/schedule.png)
-
-### Order Simulation
-
-A separate DAG (`dag_order_simulator`) generates synthetic orders hourly, inserting into SQL Server — which Datastream then picks up and streams to GCS Bronze. Order behavior (Hot Drink vs Cold Drink, Delivery vs Dine-in) is probabilistically driven by current weather conditions at each store's city.
-
-```python
-# Example: Rain profile
-{"delivery_prob": 0.80, "category_weights": {"Hot Drink": 7, "Cold Drink": 1, "Food": 2}}
-# → 80% of orders are Delivery, 70% of items are Hot Drinks
-```
 
 ---
 
