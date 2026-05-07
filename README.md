@@ -222,6 +222,8 @@ highlands-lakehouse/
 | `Orders` | order_id (UUID), store_id, customer_id, order_type, status, total_amount, created_at, updated_at |
 | `OrderDetails` | detail_id (UUID), order_id, product_id, quantity, unit_price, subtotal |
 
+![HighlandsDB](docs/schema/HighlandsDB.png)
+
 ### Bronze — GCS Raw
 
 | Path | Format | Source |
@@ -246,6 +248,8 @@ highlands-lakehouse/
 
 > SCD Type 2 on `products` and `stores` preserves historical price/status — enabling correct revenue attribution even after price changes.
 
+![Silver Layer](docs/schema/Silver%20Layer.png)
+
 ### Gold — BigQuery
 
 | Table | Type | Grain | Description |
@@ -253,6 +257,10 @@ highlands-lakehouse/
 | `gold.weather_consensus` | dbt table | city × hour | Majority-vote condition from 3 weather sources |
 | `gold.fact_sales_weather` | dbt table | hour × store × order_type × category | Main analytics fact with weather enrichment |
 | `gold.realtime_order_stats` | BQ Materialized View | hour × store × status | Near-real-time order counts (5-min refresh) |
+
+![OBT](docs/schema/Gold%20Layer/BQ%20Native%20Table.png)
+![Materialized View](docs/schema/Gold%20Layer/Materialized%20View.png)
+
 
 ---
 
